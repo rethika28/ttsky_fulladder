@@ -4,10 +4,14 @@ from cocotb.triggers import Timer
 @cocotb.test()
 async def test_full_adder(dut):
 
-    dut._log.info("Starting Full Adder Test")
-
+    # ✅ Initialize all inputs
     dut.ui_in.value = 0
     dut.uio_in.value = 0
+    dut.ena.value = 1
+    dut.clk.value = 0
+    dut.rst_n.value = 1
+
+    await Timer(1, units="ns")
 
     for a in range(2):
         for b in range(2):
@@ -17,14 +21,12 @@ async def test_full_adder(dut):
 
                 await Timer(1, units="ns")
 
-                out = dut.uo_out.value & 0xFF
-                sum_out = out & 0x1
-                carry_out = (out >> 1) & 0x1
+                out = dut.uo_out.value.integer
+                sum_out = out & 1
+                carry_out = (out >> 1) & 1
 
                 expected_sum = a ^ b ^ cin
                 expected_carry = (a & b) | (b & cin) | (a & cin)
 
                 assert sum_out == expected_sum, f"SUM FAIL {a}{b}{cin}"
                 assert carry_out == expected_carry, f"CARRY FAIL {a}{b}{cin}"
-
-    dut._log.info("All tests passed ✅")
