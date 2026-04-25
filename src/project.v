@@ -32,6 +32,6 @@ module tt_um_fulladder (
     
 
   // List all unused inputs to prevent warnings
-    wire_unused = &{ena, clk, rst_n,uio_in 1'b0};
+    wire _unused = &{ena, clk, rst_n,uio_in, 1'b0};
 
 endmodule
