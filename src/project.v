@@ -18,15 +18,20 @@ module tt_um_fulladder (
     wire a= ui_in[0];
     wire b = ui_in[1];
     wire cin = ui_in[2];
-    wire sum = uo_out[0];
-    wire carry = uo_out[1];
+    wire sum;
+    wire carry;
   // All output pins must be assigned. If not used, assign to 0.
     assign {carry,sum} = a + b + cin;
     assign uo_out [7:2] =6'b000000;
+    assign uio_out = 8'b00000000;
+    assign uio_oe =8'b00000000;
+    assign uo_out[0]=sum;
+    assign uo_out[1]=carry;
+    
    
     
 
   // List all unused inputs to prevent warnings
-    wire _unused = &{ena, clk, rst_n,uio_oe,uio_out,uio_in 1'b0};
+    wire _unused = &{ena, clk, rst_n,uio_in 1'b0};
 
 endmodule
